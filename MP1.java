@@ -53,20 +53,27 @@ public class MP1 {
     public String[] process() throws Exception {
         String[] ret = new String[20];
         List<String> stopWordsList = Arrays.asList(stopWordsArray);
+        String[] selectedLines = new String[50000];
         String line;
         try (
                 InputStream fis = new FileInputStream(inputFileName);
                 InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
-                BufferedReader br = new BufferedReader(isr);
-                ){
+                BufferedReader br = new BufferedReader(isr)
+        ){
+            Integer i = 0;
             while ((line = br.readLine()) != null){
-                System.out.println(line);
-                StringTokenizer st = new StringTokenizer(line, delimiters);
-                while (st.hasMoreTokens()){
-                    String word = st.nextToken().trim().toLowerCase(Locale.ENGLISH);
-                    if(!stopWordsList.contains(word)){
-                        System.out.println(word);
-                    }
+                selectedLines[i++] = line;
+            }
+        }
+        Integer[] indexes = getIndexes();
+        for(Integer j=0; j < indexes.length; j++){
+            line = selectedLines[indexes[j]];
+            System.out.println(line);
+            StringTokenizer st = new StringTokenizer(line, delimiters);
+            while (st.hasMoreTokens()){
+                String word = st.nextToken().trim().toLowerCase();
+                if(!stopWordsList.contains(word)){
+                    System.out.println(word);
                 }
             }
         }
