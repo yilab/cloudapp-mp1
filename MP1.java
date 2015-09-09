@@ -1,5 +1,6 @@
-import java.io.File;
+import java.io.*;
 import java.lang.reflect.Array;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -51,7 +52,24 @@ public class MP1 {
 
     public String[] process() throws Exception {
         String[] ret = new String[20];
-       
+        List<String> stopWordsList = Arrays.asList(stopWordsArray);
+        String line;
+        try (
+                InputStream fis = new FileInputStream(inputFileName);
+                InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
+                BufferedReader br = new BufferedReader(isr);
+                ){
+            while ((line = br.readLine()) != null){
+                System.out.println(line);
+                StringTokenizer st = new StringTokenizer(line, delimiters);
+                while (st.hasMoreTokens()){
+                    String word = st.nextToken().trim().toLowerCase(Locale.ENGLISH);
+                    if(!stopWordsList.contains(word)){
+                        System.out.println(word);
+                    }
+                }
+            }
+        }
         //TODO
 
         return ret;
