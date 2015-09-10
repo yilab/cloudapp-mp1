@@ -92,13 +92,15 @@ public class MP1 {
             public int compare(Map.Entry<String, Integer> t0, Map.Entry<String, Integer> t1) {
                 if(t0.getValue() > t1.getValue()) return -1;
                 if(t0.getValue() < t1.getValue()) return 1;
-                return 0;
+                return t0.getKey().compareTo(t1.getKey());
             }
         });
 //        System.out.println(countList);
         String[] ret = new String[20];
         for( Integer k = 0; k < 20; k++){
             ret[k] = countList.get(k).getKey();
+//            System.out.println(ret[k]);
+//            System.out.println(countList.get(k).getValue());
         }
         return ret;
     }
