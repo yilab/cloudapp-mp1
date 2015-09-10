@@ -51,10 +51,10 @@ public class MP1 {
     }
 
     public String[] process() throws Exception {
-        String[] ret = new String[20];
         List<String> stopWordsList = Arrays.asList(stopWordsArray);
         Map<Integer, String> linesMap = new HashMap<Integer, String>();
         String line;
+        // populate linesMap
         try (
                 InputStream fis = new FileInputStream(inputFileName);
                 InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
@@ -65,22 +65,41 @@ public class MP1 {
                 linesMap.put(i++,line);
             }
         }
+        // populate countMap
         Integer[] indexes = getIndexes();
+        Map<String, Integer> countMap = new HashMap<String, Integer>();
         for(Integer j=0; j < indexes.length; j++){
             line = linesMap.get(indexes[j]);
-            System.out.println(j);
-            System.out.println(indexes[j]);
-            System.out.println(line);
+//            System.out.println(line);
             StringTokenizer st = new StringTokenizer(line, delimiters);
             while (st.hasMoreTokens()){
                 String word = st.nextToken().trim().toLowerCase();
                 if(!stopWordsList.contains(word)){
-                    System.out.println(word);
+                    if(countMap.containsKey(word)){
+                        countMap.put(word, countMap.get(word) + 1);
+                    }else{
+                        countMap.put(word, 0);
+                    }
+//                    System.out.println(word);
+//                    System.out.println(countMap.get(word));
                 }
             }
         }
-        //TODO
-
+        // sort
+        List<Map.Entry<String, Integer>> countList = new ArrayList<Map.Entry<String, Integer>>(countMap.entrySet());
+        Collections.sort(countList, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> t0, Map.Entry<String, Integer> t1) {
+                if(t0.getValue() > t1.getValue()) return -1;
+                if(t0.getValue() < t1.getValue()) return 1;
+                return 0;
+            }
+        });
+//        System.out.println(countList);
+        String[] ret = new String[20];
+        for( Integer k = 0; k < 20; k++){
+            ret[k] = countList.get(k).getKey();
+        }
         return ret;
     }
 
