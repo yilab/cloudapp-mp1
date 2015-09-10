@@ -78,7 +78,7 @@ public class MP1 {
                     if(countMap.containsKey(word)){
                         countMap.put(word, countMap.get(word) + 1);
                     }else{
-                        countMap.put(word, 0);
+                        countMap.put(word, 1);
                     }
 //                    System.out.println(word);
 //                    System.out.println(countMap.get(word));
